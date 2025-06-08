@@ -2,68 +2,75 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [newTask, setNewTask] = useState({ title: '', description: '' });
 
-  // Load tasks on page load
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch('http://localhost:5276/api/tasks');
+      const data = await response.json();
+      setTasks(data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  // Load tasks on mount
   useEffect(() => {
-    fetch("http://localhost:5276/api/tasks")
-      .then(res => res.json())
-      .then(data => setTasks(data))
-      .catch(err => console.error("Error fetching tasks:", err));
+    fetchTasks();
   }, []);
 
-  // Add Task
-  const handleAddTask = async () => {
-    const newTask = { title, description };
+  const handleAddTask = async (e) => {
+    e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5276/api/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newTask)
+      const response = await fetch('http://localhost:5276/api/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTask),
       });
-      if (res.ok) {
-        const createdTask = await res.json();
-        setTasks([...tasks, createdTask]);
-        setTitle("");
-        setDescription("");
-      } else {
-        console.error("Failed to create task:", res.status);
+
+      if (!response.ok) {
+        throw new Error('Failed to add task');
       }
-    } catch (err) {
-      console.error("Request error:", err);
+
+      setNewTask({ title: '', description: '' }); // Reset form
+      fetchTasks(); // Refresh list
+    } catch (error) {
+      console.error('Error adding task:', error);
     }
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
+    <div className="max-w-xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">TaskMate</h1>
 
-      <div className="mb-4">
+      {/* Form */}
+      <form onSubmit={handleAddTask} className="mb-6 space-y-2">
         <input
-          className="border p-2 w-full mb-2"
+          type="text"
           placeholder="Title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
+          value={newTask.title}
+          onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+          className="w-full border px-3 py-2 rounded"
+          required
         />
         <input
-          className="border p-2 w-full mb-2"
+          type="text"
           placeholder="Description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
+          value={newTask.description}
+          onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+          className="w-full border px-3 py-2 rounded"
         />
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={handleAddTask}
-        >
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
           Add Task
         </button>
-      </div>
+      </form>
 
-      <ul>
-        {tasks.map(task => (
-          <li key={task.id} className="border-b py-2">
-            <strong>{task.title}</strong>: {task.description}
+      {/* Task List */}
+      <ul className="space-y-2">
+        {tasks.map((task) => (
+          <li key={task.id} className="bg-gray-100 p-3 rounded shadow">
+            <div className="font-medium">{task.title}</div>
+            <div className="text-sm text-gray-600">{task.description}</div>
           </li>
         ))}
       </ul>
