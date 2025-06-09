@@ -66,6 +66,26 @@ const handleEditTask = (task) => {
   setNewTask({ title: task.title, description: task.description });
 };
 
+const handleToggleComplete = async (task) => {
+  try {
+    const updatedTask = {
+      ...task,
+      isComplete: !task.isComplete
+    };
+
+    const response = await fetch(`http://localhost:5276/api/tasks/${task.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedTask),
+    });
+
+    if (!response.ok) throw new Error('Toggle failed');
+    fetchTasks();
+  } catch (error) {
+    console.error('Error toggling task:', error);
+  }
+};
+
 
   return (
     <div className="max-w-xl mx-auto p-4">
