@@ -24,22 +24,29 @@ function App() {
   const handleAddTask = async (e) => {
   e.preventDefault();
   try {
-      const response = await fetch('http://localhost:5276/api/tasks', {
-        method: 'POST',
+    const url = isEditing
+      ? `http://localhost:5276/api/tasks/${editTaskId}`
+      : 'http://localhost:5276/api/tasks';
+    const method = isEditing ? 'PUT' : 'POST';
+
+    const response = await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTask),
+      body: JSON.stringify({ ...newTask, isComplete: false }),
     });
 
-      if (!response.ok) {
-        throw new Error('Failed to add task');
-      }
+    if (!response.ok) throw new Error(`${isEditing ? 'Update' : 'Add'} failed`);
 
-      setNewTask({ title: '', description: '' }); // Reset form
-      fetchTasks(); // Refresh list
+    // Reset
+    setNewTask({ title: '', description: '' });
+    setIsEditing(false);
+    setEditTaskId(null);
+    fetchTasks();
   } catch (error) {
-      console.error('Error adding task:', error);
+    console.error('Error:', error);
   }
 };
+
 
   const handleDeleteTask = async (id) => {
   try {
