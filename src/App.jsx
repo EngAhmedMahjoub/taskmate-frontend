@@ -91,6 +91,20 @@ const handleEditTask = (task) => {
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
           Add Task
         </button>
+        {isEditing && (
+  <button
+    type="button"
+    onClick={() => {
+      setIsEditing(false);
+      setEditTaskId(null);
+      setNewTask({ title: '', description: '' });
+    }}
+    className="ml-2 text-gray-700"
+  >
+    Cancel
+  </button>
+)}
+
       </form>
 
       {/* Task List */}
