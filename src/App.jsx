@@ -22,13 +22,13 @@ function App() {
   }, []);
 
   const handleAddTask = async (e) => {
-    e.preventDefault();
-    try {
+  e.preventDefault();
+  try {
       const response = await fetch('http://localhost:5276/api/tasks', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask),
-      });
+    });
 
       if (!response.ok) {
         throw new Error('Failed to add task');
@@ -36,10 +36,10 @@ function App() {
 
       setNewTask({ title: '', description: '' }); // Reset form
       fetchTasks(); // Refresh list
-    } catch (error) {
+  } catch (error) {
       console.error('Error adding task:', error);
-    }
-  };
+  }
+};
 
   const handleDeleteTask = async (id) => {
   try {
@@ -52,6 +52,13 @@ function App() {
     console.error('Error deleting task:', error);
   }
 };
+
+const handleEditTask = (task) => {
+  setIsEditing(true);
+  setEditTaskId(task.id);
+  setNewTask({ title: task.title, description: task.description });
+};
+
 
   return (
     <div className="max-w-xl mx-auto p-4">
