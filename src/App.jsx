@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import TaskItem from './components/TaskItem'; 
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -130,38 +131,13 @@ const handleToggleComplete = async (task) => {
       {/* Task List */}
       <ul className="space-y-2">
   {tasks.map((task) => (
-    <li
+    <TaskItem
       key={task.id}
-      className={`flex justify-between items-center bg-gray-100 p-3 rounded shadow ${
-        task.isComplete ? 'opacity-60 line-through' : ''
-      }`}
-    >
-      <div>
-        <div className="font-medium">{task.title}</div>
-        <div className="text-sm text-gray-600">{task.description}</div>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          checked={task.isComplete}
-          onChange={() => handleToggleComplete(task)}
-          className="w-5 h-5"
-        />
-        <button
-          onClick={() => handleEditTask(task)}
-          className="text-blue-500 hover:underline"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleDeleteTask(task.id)}
-          className="text-red-500 hover:underline"
-        >
-          Delete
-        </button>
-      </div>
-    </li>
+      task={task}
+      onEdit={handleEditTask}
+      onDelete={handleDeleteTask}
+      onToggleComplete={handleToggleComplete}
+    />
   ))}
 </ul>
 
