@@ -110,34 +110,20 @@ const handleEditTask = (task) => {
       {/* Task List */}
       <ul className="space-y-2">
   {tasks.map((task) => (
-    <li key={task.id} className="bg-gray-100 p-3 rounded shadow flex justify-between items-center">
+    <li key={task.id} className={`flex items-center justify-between bg-gray-100 p-3 rounded shadow ${task.isComplete ? 'opacity-60 line-through' : ''}`}>
       <div>
-        <div className="font-semibold">{task.title}</div>
+        <div className="font-medium">{task.title}</div>
         <div className="text-sm text-gray-600">{task.description}</div>
-        <div className="text-xs mt-1">
-          Status:{" "}
-          <span className={task.isComplete ? "text-green-600" : "text-red-500"}>
-            {task.isComplete ? "Completed" : "Pending"}
-          </span>
-        </div>
       </div>
-      <div className="space-x-2">
-        <button
-          onClick={() => handleEditTask(task)}
-          className="text-white bg-blue-500 px-2 py-1 rounded"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleDeleteTask(task.id)}
-          className="text-white bg-red-500 px-2 py-1 rounded"
-        >
-          Delete
-        </button>
-      </div>
+      <input
+        type="checkbox"
+        checked={task.isComplete}
+        onChange={() => handleToggleComplete(task)}
+        className="w-5 h-5"
+      />
     </li>
   ))}
-  </ul>
+</ul>
 
     </div>
   );
