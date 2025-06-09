@@ -39,6 +39,18 @@ function App() {
     }
   };
 
+  const handleDeleteTask = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:5276/api/tasks/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) throw new Error('Delete failed');
+    fetchTasks(); // refresh list
+  } catch (error) {
+    console.error('Error deleting task:', error);
+  }
+};
+
   return (
     <div className="max-w-xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">TaskMate</h1>
