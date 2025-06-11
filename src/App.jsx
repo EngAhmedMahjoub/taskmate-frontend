@@ -99,7 +99,7 @@ const handleToggleComplete = async (task) => {
           placeholder="Title"
           value={newTask.title}
           onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-          className="w-full border px-3 py-2 rounded"
+          className="input"
           required
         />
         <input
@@ -107,9 +107,9 @@ const handleToggleComplete = async (task) => {
           placeholder="Description"
           value={newTask.description}
           onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-          className="w-full border px-3 py-2 rounded"
+          className="input"
         />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button type="submit" className="btn-primary">
           Add Task
         </button>
         {isEditing && (
@@ -120,7 +120,7 @@ const handleToggleComplete = async (task) => {
       setEditTaskId(null);
       setNewTask({ title: '', description: '' });
     }}
-    className="ml-2 text-gray-700"
+    className="btn-secondary"
   >
     Cancel
   </button>
