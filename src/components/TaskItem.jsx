@@ -1,13 +1,13 @@
 const TaskItem = ({ task, onEdit, onDelete, onToggleComplete }) => {
   return (
     <li
-      className={`flex justify-between items-center bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all ${
-        task.isComplete ? 'opacity-50 line-through' : ''
-      }`}
+  className={`card flex justify-between items-center ${
+    task.isComplete ? 'opacity-50 line-through' : ''
+    }`}
     >
       <div>
-        <div className="font-semibold text-lg">{task.title}</div>
-        <div className="text-sm text-gray-500">{task.description}</div>
+       <div className="font-semibold text-lg text-gray-800 dark:text-gray-100">{task.title}</div>
+        <div className="text-sm text-gray-500 dark:text-gray-400">{task.description}</div>
       </div>
 
       <div className="flex items-center space-x-3">
