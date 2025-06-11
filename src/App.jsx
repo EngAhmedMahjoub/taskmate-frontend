@@ -90,6 +90,14 @@ const handleToggleComplete = async (task) => {
 
   return (
     <div className="max-w-xl mx-auto p-4">
+      <button
+        className="mb-4 text-sm underline"
+        onClick={() => {
+        document.documentElement.classList.toggle('dark');
+        }}
+      >
+  Toggle Dark Mode
+</button>
       <h1 className="text-2xl font-bold mb-4">TaskMate</h1>
 
       {/* Form */}
