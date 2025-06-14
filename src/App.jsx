@@ -111,6 +111,11 @@ const handleToggleComplete = async (task) => {
 
   return (
     <div className="max-w-xl mx-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">TaskMate</h1>
+        <button onClick={logout} className="btn-secondary">Logout</button>
+      </div>
+
       <button
         className="mb-4 text-sm underline"
         onClick={() => {
