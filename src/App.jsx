@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import TaskItem from './components/TaskItem'; 
+import { useAuth } from "./contexts/AuthContext";
+import AuthForm from "./components/AuthForm";
 
 function App() {
+  const { token, logout } = useAuth(); // Use auth state
+
+  // If not logged in, show the auth form
+  if (!token) return <AuthForm />;
+
+  // Task state & logic
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({ title: '', description: '' });
   const [isEditing, setIsEditing] = useState(false);
