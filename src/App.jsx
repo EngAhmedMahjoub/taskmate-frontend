@@ -17,7 +17,11 @@ function App() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:5276/api/tasks');
+      const response = await fetch('http://localhost:5276/api/tasks', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       setTasks(data);
     } catch (error) {
@@ -40,7 +44,10 @@ function App() {
 
     const response = await fetch(url, {
       method,
-      headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
       body: JSON.stringify({ ...newTask, isComplete: false }),
     });
 
@@ -61,6 +68,9 @@ function App() {
   try {
     const response = await fetch(`http://localhost:5276/api/tasks/${id}`, {
       method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
     });
     if (!response.ok) throw new Error('Delete failed');
     fetchTasks(); // refresh list
@@ -84,7 +94,10 @@ const handleToggleComplete = async (task) => {
 
     const response = await fetch(`http://localhost:5276/api/tasks/${task.id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+},
       body: JSON.stringify(updatedTask),
     });
 
