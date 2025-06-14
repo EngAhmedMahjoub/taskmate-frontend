@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import TaskItem from './components/TaskItem'; 
 import { useAuth } from "./contexts/AuthContext";
 import AuthForm from "./components/AuthForm";
+import { authFetch } from './services/api';
 
 function App() {
   const { token, logout } = useAuth(); // Use auth state
@@ -15,23 +16,19 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [editTaskId, setEditTaskId] = useState(null);
 
+  useEffect(() => {
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:5276/api/tasks', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
+      const data = await authFetch('http://localhost:5276/api/tasks', 'GET', null, token);
       setTasks(data);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
+      console.error("Error fetching tasks:", error);
     }
   };
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  if (token) fetchTasks();
+}, [token]);
+
 
   const handleAddTask = async (e) => {
     e.preventDefault();
