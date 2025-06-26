@@ -6,16 +6,16 @@ import { authFetch } from './services/api';
 
 function App() {
   const { token, logout } = useAuth(); // Use auth state
-
-  // If not logged in, show the auth form
-  if (!token) return <AuthForm />;
-
+  
   // Task state & logic
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({ title: '', description: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [editTaskId, setEditTaskId] = useState(null);
 
+  // If not logged in, show the auth form
+  if (!token) return <AuthForm />;
+  
   useEffect(() => {
   const fetchTasks = async () => {
     try {
