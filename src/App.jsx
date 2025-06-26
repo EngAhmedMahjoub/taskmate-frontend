@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TaskItem from './components/TaskItem'; 
 import { useAuth } from "./contexts/AuthContext";
 import AuthForm from "./components/AuthForm";
@@ -15,21 +15,16 @@ function App() {
 
   // If not logged in, show the auth form
   if (!token) return <AuthForm />;
-  
-  useEffect(() => {
-  const fetchTasks = async () => {
+
+ const fetchTasks = async () => {
     try {
       const data = await authFetch('http://localhost:5276/api/tasks', 'GET', null, token);
       setTasks(data);
     } catch (error) {
-      console.error("Error fetching tasks:", error);
+      console.error('Error fetching tasks:', error);
     }
   };
-
-  if (token) fetchTasks();
-}, [token]);
-
-
+  
   const handleAddTask = async (e) => {
     e.preventDefault();
     try {
